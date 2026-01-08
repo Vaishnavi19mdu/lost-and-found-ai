@@ -3,12 +3,12 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 async function testAdd() {
   await addDoc(collection(db, "lost_items"), {
-    title: "Black ID Card",
-    description: "Lost near library",
-    category: "ID Card",
-    location: "Main Library",
-    status: "open",
-    createdAt: serverTimestamp()
+    title,
+  category,
+  description,
+  image: base64Image,
+  isPrivate,            // 👈 NEW FIELD
+  timestamp: serverTimestamp()
   });
 
   alert("Firestore working!");

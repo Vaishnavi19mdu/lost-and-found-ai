@@ -5,6 +5,9 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
   const title = document.getElementById("title").value.trim();
   const category = document.getElementById("category").value.trim();
   const description = document.getElementById("description").value.trim();
+  const isPrivate = document.getElementById("isPrivate").checked;
+  
+
 
   if (!title || !category) {
     alert("Title and category are required!");
@@ -16,6 +19,7 @@ document.getElementById("submitBtn").addEventListener("click", async () => {
       title,
       category,
       description,
+      isPrivate: isPrivate,
       timestamp: new Date()
     });
 

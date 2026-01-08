@@ -2,26 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add Lost Item | Lost & Found AI</title>
+  <title>Add Lost Item | CampusFetch</title>
+
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #f1f5f9;
       margin: 0;
-      padding: 0;
     }
     header {
       background: linear-gradient(135deg, #6366f1, #4f46e5);
       color: white;
-      padding: 25px 40px;
+      padding: 25px;
       text-align: center;
-    }
-    main {
-      padding: 30px 40px;
     }
     form {
       max-width: 450px;
-      margin: auto;
+      margin: 30px auto;
       background: white;
       padding: 25px;
       border-radius: 12px;
@@ -34,7 +31,6 @@
       margin-top: 5px;
       border-radius: 6px;
       border: 1px solid #cbd5e1;
-      font-size: 14px;
     }
     button {
       background: #4f46e5;
@@ -44,78 +40,91 @@
       margin-top: 20px;
       cursor: pointer;
     }
-    button:hover { background: #6366f1; }
   </style>
 </head>
+
 <body>
-  <header>
-    <h1>Lost & Found AI</h1>
-    <p>Add a lost item</p>
-  </header>
-  <main>
-    <form id="addForm">
-      <label for="title">Item Name</label>
-      <input id="title" type="text" placeholder="e.g. Wallet, Earphones" required />
 
-      <label for="category">Category</label>
-      <select id="category" required>
-        <option value="">Select</option>
-        <option value="Electronics">Electronics</option>
-        <option value="ID Cards">ID Cards</option>
-        <option value="Books">Books</option>
-        <option value="Clothing">Clothing</option>
-        <option value="Other">Other</option>
-      </select>
+<header>
+  <h1>CampusFetch</h1>
+  <p>Add a lost item</p>
+</header>
 
-      <label for="description">Description</label>
-      <textarea id="description" rows="3" placeholder="Add description"></textarea>
+<form id="addForm">
+  <label>Item Name</label>
+  <input id="title" required />
 
-      <label for="itemImage">Upload Image (optional)</label>
-      <input id="itemImage" type="file" accept="image/*" />
+  <label>Category</label>
+  <select id="category" required>
+    <option value="">Select</option>
+    <option>Electronics</option>
+    <option>ID Cards</option>
+    <option>Books</option>
+    <option>Clothing</option>
+    <option>Other</option>
+  </select>
 
-      <button type="submit">Add Item</button>
-    </form>
-  </main>
+  <label>Description</label>
+  <textarea id="description"></textarea>
 
-  <script type="module">
-    import { db } from "../firebase.js";
-    import { collection, addDoc, serverTimestamp } 
-      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <label>
+    <input type="checkbox" id="isPrivate" />
+    Contains private / sensitive information
+  </label>
 
-    document.getElementById("addForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
+  <label>Upload Image (optional)</label>
+  <input type="file" id="itemImage" accept="image/*" />
 
-      const title = document.getElementById("title").value.trim();
-      const category = document.getElementById("category").value.trim();
-      const description = document.getElementById("description").value.trim();
-      const file = document.getElementById("itemImage").files[0];
+  <button type="submit">Add Item</button>
+</form>
 
-      let base64Image = null;
-      if (file) {
-        base64Image = await new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result.split(",")[1]);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-      }
+<script type="module">
+  import { db } from "../firebase.js";
+  import { collection, addDoc, serverTimestamp }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      try {
-        await addDoc(collection(db, "lost_items"), {
-          title,
-          category,
-          description,
-          image: base64Image,
-          timestamp: serverTimestamp()
-        });
+  document.getElementById("addForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        alert("Item added successfully!");
-        document.getElementById("addForm").reset();
-      } catch (error) {
-        console.error("Error adding item:", error);
-        alert("Failed to add item.");
-      }
-    });
-  </script>
+    const title = document.getElementById("title").value.trim();
+    const category = document.getElementById("category").value;
+    const description = document.getElementById("description").value.trim();
+    const isPrivate = document.getElementById("isPrivate").checked;
+    const file = document.getElementById("itemImage").files[0];
+
+    if (!title || !category) {
+      alert("Title and category are required!");
+      return;
+    }
+
+    let base64Image = null;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        base64Image = reader.result.split(",")[1];
+        await saveItem();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      await saveItem();
+    }
+
+    async function saveItem() {
+      await addDoc(collection(db, "lost_items"), {
+        title,
+        category,
+        description,
+        image: base64Image,
+        isPrivate,              // ✅ NOW SAVED
+        timestamp: serverTimestamp()
+      });
+
+      alert("Item added successfully!");
+      document.getElementById("addForm").reset();
+    }
+  });
+</script>
+
 </body>
 </html>

@@ -21,19 +21,58 @@
 </div>
 
 <!-- Profile Popup -->
-<!-- Profile Popup -->
 <div id="profile-popup" class="hidden">
-  <p><strong>Vaishnavi</strong></p>
-  <p>vaishnavi.cs2021@abc.net</p>
+  <p><strong id="profileName">Vaishnavi</strong></p>
+  <p id="profileEmail">vaishnavi.cs2021@abc.net</p>
   <span class="owner-badge">Owner</span>
 
-  <hr style="margin: 10px 0;">
+  <hr>
 
-  <a href="../settings/settings.html" class="settings-link">⚙ Settings</a>
-
+  <button id="settingsBtn" class="settings-link">⚙ Settings</button>
 </div>
 
-
+<!-- Load items -->
 <script type="module" src="listItems.js"></script>
+
+<!-- Profile + Auth Logic -->
+<script type="module">
+  import { auth } from "../firebase.js";
+  import { onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  const profileBtn = document.getElementById("profile-btn");
+  const popup = document.getElementById("profile-popup");
+  const settingsBtn = document.getElementById("settingsBtn");
+  const profileName = document.getElementById("profileName");
+  const profileEmail = document.getElementById("profileEmail");
+
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    popup.classList.toggle("hidden");
+  });
+
+  popup.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  document.addEventListener("click", () => {
+    popup.classList.add("hidden");
+  });
+
+  settingsBtn.addEventListener("click", () => {
+    const user = auth.currentUser;
+    window.location.href = user
+      ? "../settings/settings.html"
+      : "../login/login.html";
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      profileName.textContent = user.email.split("@")[0];
+      profileEmail.textContent = user.email;
+    }
+  });
+</script>
+
 </body>
 </html>

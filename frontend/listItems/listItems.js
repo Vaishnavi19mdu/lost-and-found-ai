@@ -41,11 +41,3 @@ async function loadItems() {
 }
 
 loadItems();
-
-/* Profile popup toggle */
-const btn = document.getElementById("profile-btn");
-const popup = document.getElementById("profile-popup");
-
-btn.addEventListener("click", () => {
-  popup.classList.toggle("hidden");
-});

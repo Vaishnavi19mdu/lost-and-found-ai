@@ -76,55 +76,10 @@
   <input type="file" id="itemImage" accept="image/*" />
 
   <button type="submit">Add Item</button>
+  <button type="button" id="goToList">View Lost Items</button>
 </form>
 
-<script type="module">
-  import { db } from "../firebase.js";
-  import { collection, addDoc, serverTimestamp }
-    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-  document.getElementById("addForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const title = document.getElementById("title").value.trim();
-    const category = document.getElementById("category").value;
-    const description = document.getElementById("description").value.trim();
-    const isPrivate = document.getElementById("isPrivate").checked;
-    const file = document.getElementById("itemImage").files[0];
-
-    if (!title || !category) {
-      alert("Title and category are required!");
-      return;
-    }
-
-    let base64Image = null;
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        base64Image = reader.result.split(",")[1];
-        await saveItem();
-      };
-      reader.readAsDataURL(file);
-    } else {
-      await saveItem();
-    }
-
-    async function saveItem() {
-      await addDoc(collection(db, "lost_items"), {
-        title,
-        category,
-        description,
-        image: base64Image,
-        isPrivate,              // ✅ NOW SAVED
-        timestamp: serverTimestamp()
-      });
-
-      alert("Item added successfully!");
-      document.getElementById("addForm").reset();
-    }
-  });
-</script>
+<script type="module" src="addItem.js"></script>
 
 </body>
 </html>

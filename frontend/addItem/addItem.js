@@ -1,37 +1,54 @@
 import { db } from "../firebase.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-document.getElementById("submitBtn").addEventListener("click", async () => {
+const form = document.getElementById("addForm");
+const goToListBtn = document.getElementById("goToList");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
   const title = document.getElementById("title").value.trim();
-  const category = document.getElementById("category").value.trim();
+  const category = document.getElementById("category").value;
   const description = document.getElementById("description").value.trim();
   const isPrivate = document.getElementById("isPrivate").checked;
-  
-
+  const file = document.getElementById("itemImage").files[0];
 
   if (!title || !category) {
     alert("Title and category are required!");
     return;
   }
 
-  try {
+  let base64Image = null;
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      base64Image = reader.result.split(",")[1];
+      await saveItem();
+    };
+    reader.readAsDataURL(file);
+  } else {
+    await saveItem();
+  }
+
+  async function saveItem() {
     await addDoc(collection(db, "lost_items"), {
       title,
       category,
       description,
-      isPrivate: isPrivate,
-      timestamp: new Date()
+      image: base64Image,
+      isPrivate,
+      timestamp: serverTimestamp()
     });
 
     alert("Item added successfully!");
-
-    // optional: clear form
-    document.getElementById("title").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("description").value = "";
-
-  } catch (error) {
-    console.error("Error adding item:", error);
-    alert("Failed to add item.");
+    window.location.href = "../listItems/listItems.html";
+ // ✅ redirect
   }
+});
+
+// View Lost Items button (always works)
+goToListBtn.addEventListener("click", () => {
+  window.location.href = "../listItems/listItems.html";
 });

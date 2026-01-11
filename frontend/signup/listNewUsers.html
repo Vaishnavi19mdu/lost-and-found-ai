@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Registered New Users | CampusFetch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #4a90e2;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+
+<h1>👥 Registered New Users</h1>
+<table id="usersTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Rows will be injected here -->
+  </tbody>
+</table>
+
+<script type="module">
+  import { db } from "../../firebase.js";
+  import { collection, getDocs } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  async function loadUsers() {
+    const tableBody = document.querySelector("#usersTable tbody");
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "newusers"));
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${data.name || "-"}</td>
+          <td>${data.email || "-"}</td>
+          <td>${data.role || "-"}</td>
+          <td>${data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : "-"}</td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    } catch (err) {
+      console.error("Error loading users:", err);
+      const row = document.createElement("tr");
+      row.innerHTML = `<td colspan="4">Failed to load users</td>`;
+      tableBody.appendChild(row);
+    }
+  }
+
+  loadUsers();
+</script>
+
+</body>
+</html>

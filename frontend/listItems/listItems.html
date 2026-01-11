@@ -61,9 +61,11 @@
 
   settingsBtn.addEventListener("click", () => {
     const user = auth.currentUser;
-    window.location.href = user
-      ? "../settings/settings.html"
-      : "../login/login.html";
+    if (user) {
+      window.location.href = "../settings/settings.html";
+    } else {
+      window.location.href = "../login/login.html?redirect=settings";
+    }
   });
 
   onAuthStateChanged(auth, (user) => {

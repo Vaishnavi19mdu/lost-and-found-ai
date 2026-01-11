@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Claim | CampusFetch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .item-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 500px;
+    }
+    .item-card h3 {
+      margin: 0;
+      color: #4a90e2;
+    }
+    .item-card p {
+      margin: 5px 0;
+      color: #555;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px;
+      background: #27ae60;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1e8449;
+    }
+    .back-btn {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 15px;
+      background: #4f46e5;
+      color: #fff;
+      border-radius: 6px;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-btn:hover {
+      background: #3730a3;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🔒 Verify Before Claiming</h1>
+<div id="itemContainer"></div>
+<a href="./claimFoundItems.html" class="back-btn">⬅ Back to Found Items</a>
+
+<script type="module">
+  import { auth, db } from "../../firebase.js";
+  import { onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { doc, getDoc, updateDoc } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const itemContainer = document.getElementById("itemContainer");
+
+  // ✅ Get item ID from URL
+  const params = new URLSearchParams(window.location.search);
+  const itemId = params.get("id");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "../login/login.html";
+      return;
+    }
+
+    if (!itemId) {
+      itemContainer.innerHTML = "<p style='text-align:center;color:red;'>No item selected.</p>";
+      return;
+    }
+
+    const docRef = doc(db, "itemsfound", itemId);
+    const docSnap = await getDoc(docRef);
+
+    if (!docSnap.exists()) {
+      itemContainer.innerHTML = "<p style='text-align:center;color:red;'>Item not found.</p>";
+      return;
+    }
+
+    const data = docSnap.data();
+
+    itemContainer.innerHTML = `
+      <div class="item-card">
+        <h3>${data.title || "Unnamed Item"}</h3>
+        <p><strong>Category:</strong> ${data.category || "-"}</p>
+        <p><strong>Description:</strong> ${data.description || "-"}</p>
+        <p><strong>Status:</strong> ${data.claimedBy ? "Claimed" : "Available"}</p>
+        ${data.claimedBy ? "<p>Already claimed.</p>" : `
+          <form id="verifyForm">
+            <label>Enter Category</label>
+            <input id="categoryAnswer" required />
+            <label>Enter Description Keyword</label>
+            <input id="descAnswer" required />
+            <button type="submit">Verify & Claim</button>
+          </form>
+        `}
+      </div>
+    `;
+
+    if (!data.claimedBy) {
+      const form = document.getElementById("verifyForm");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const categoryAnswer = document.getElementById("categoryAnswer").value.trim().toLowerCase();
+        const descAnswer = document.getElementById("descAnswer").value.trim().toLowerCase();
+
+        const categoryMatch = categoryAnswer === (data.category || "").toLowerCase();
+        const descMatch = (data.description || "").toLowerCase().includes(descAnswer);
+
+        if (categoryMatch && descMatch) {
+          await updateDoc(docRef, {
+            claimedBy: user.uid,
+            claimedAt: new Date()
+          });
+          alert("✅ Verification passed! You claimed this item.");
+          window.location.href = "./myclaims.html";
+        } else {
+          alert("❌ Verification failed. Your answers don’t match the item details.");
+        }
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

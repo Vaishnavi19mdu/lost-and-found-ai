@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Found Item | CampusFetch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 25px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+    header p {
+      margin: 5px 0 0;
+      font-size: 16px;
+    }
+    form {
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #374151;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    button {
+      background: #059669;
+      color: white;
+      font-weight: bold;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #047857;
+    }
+    .secondary-btn {
+      background: #4f46e5;
+    }
+    .secondary-btn:hover {
+      background: #3730a3;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>CampusFetch</h1>
+  <p>Report a found item (others can claim it)</p>
+</header>
+
+<form id="foundForm">
+  <label>Item Name</label>
+  <input id="title" required />
+
+  <label>Category</label>
+  <select id="category" required>
+    <option value="">Select</option>
+    <option>Electronics</option>
+    <option>ID Cards</option>
+    <option>Books</option>
+    <option>Clothing</option>
+    <option>Other</option>
+  </select>
+
+  <label>Description</label>
+  <textarea id="description"></textarea>
+
+  <button type="submit">Add Found Item</button>
+  <button type="button" id="goToList" class="secondary-btn">View Found Items</button>
+</form>
+
+<script type="module">
+  import { db } from "../firebase.js";   // ✅ adjust path if needed
+  import { collection, addDoc, serverTimestamp } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const form = document.getElementById("foundForm");
+  const goToListBtn = document.getElementById("goToList");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const title = document.getElementById("title").value.trim();
+      const category = document.getElementById("category").value;
+      const description = document.getElementById("description").value.trim();
+
+      if (!title || !category) {
+        alert("Title and category are required!");
+        return;
+      }
+
+      await addDoc(collection(db, "itemsfound"), {
+        title,
+        category,
+        description,
+        timestamp: serverTimestamp()
+      });
+
+      alert("✅ Found item reported successfully!");
+      window.location.href = "./itemsfound.html";   // ✅ redirect
+    } catch (err) {
+      console.error("Error adding found item:", err);
+      alert("Failed to add item: " + err.message);
+    }
+  });
+
+  goToListBtn.addEventListener("click", () => {
+    window.location.href = "./itemsfound.html";   // ✅ direct navigation
+  });
+</script>
+
+</body>
+</html>

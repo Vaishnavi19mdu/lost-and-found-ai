@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Claim Found Items | CampusFetch</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f9fc;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .item-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      margin: 15px auto;
+      max-width: 500px;
+    }
+    .item-card h3 {
+      margin: 0;
+      color: #4a90e2;
+    }
+    .item-card p {
+      margin: 5px 0;
+      color: #555;
+    }
+    .verify-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #27ae60;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    .verify-link:hover {
+      background: #1e8449;
+    }
+  </style>
+</head>
+<body>
+
+<h1>📦 Claim Found Items</h1>
+<div id="itemsContainer"></div>
+
+<script type="module">
+  import { auth, db } from "../../firebase.js";
+  import { onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { collection, getDocs } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const itemsContainer = document.getElementById("itemsContainer");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "../login/login.html";
+      return;
+    }
+
+    try {
+      const querySnapshot = await getDocs(collection(db, "itemsfound"));
+      querySnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+
+        const card = document.createElement("div");
+        card.className = "item-card";
+        card.innerHTML = `
+          <h3>${data.title || "Unnamed Item"}</h3>
+          <p><strong>Category:</strong> ${data.category || "-"}</p>
+          <p><strong>Status:</strong> ${data.claimedBy ? "Claimed" : "Available"}</p>
+          ${data.claimedBy ? "" : `<a class="verify-link" href="./verifyClaim.html?id=${docSnap.id}">Go to Verify</a>`}
+        `;
+
+        itemsContainer.appendChild(card);
+      });
+    } catch (err) {
+      console.error("Error loading items:", err);
+      itemsContainer.innerHTML = "<p style='text-align:center;color:red;'>Failed to load items.</p>";
+    }
+  });
+</script>
+
+</body>
+</html>

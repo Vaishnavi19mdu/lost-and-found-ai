@@ -10,3 +10,11 @@ build/
 
 # logs
 *.log
+# Node
+node_modules/
+
+# Python
+__pycache__/
+
+# Firebase secrets
+serviceAccountKey.json

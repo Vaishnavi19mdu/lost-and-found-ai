@@ -3,97 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <title>Items Navigation | CampusFetch</title>
+
   <style>
+    :root {
+      --brand: #0f172a;
+      --surface: #eef2ff;
+      --blue-main: #2563eb;
+      --blue-soft: #3b82f6;
+      --blue-light: #60a5fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
       margin: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--surface);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 🌊 ENHANCED GLOW BACKGROUND */
+    .bg-anim {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-anim span {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      filter: blur(110px);
+      opacity: 0.55;
+      animation: float 26s infinite ease-in-out;
+    }
+
+    .bg-anim span:nth-child(1) {
+      background: var(--blue-main);
+      top: 10%;
+      left: 5%;
+    }
+
+    .bg-anim span:nth-child(2) {
+      background: var(--blue-soft);
+      top: 65%;
+      left: 20%;
+      animation-duration: 34s;
+    }
+
+    .bg-anim span:nth-child(3) {
+      background: var(--blue-light);
+      top: 30%;
+      left: 70%;
+      animation-duration: 40s;
+    }
+
+    .bg-anim span:nth-child(4) {
+      background: var(--blue-soft);
+      top: 80%;
+      left: 75%;
+      animation-duration: 30s;
+    }
+
+    @keyframes float {
+      0%   { transform: translate(0, 0); }
+      50%  { transform: translate(70px, -50px); }
+      100% { transform: translate(0, 0); }
     }
 
     header {
+      max-width: 900px;
+      margin: 70px auto 40px;
       text-align: center;
-      margin-bottom: 30px;
+      padding: 0 20px;
     }
 
     header h1 {
-      color: #2c3e50;
+      color: var(--brand);
+      margin-bottom: 10px;
+    }
+
+    header p {
+      color: #475569;
+      font-size: 15px;
     }
 
     .btn-container {
-      display: flex;
-      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 26px;
+      padding: 0 20px;
     }
 
     button {
-      padding: 15px 25px;
+      padding: 26px 20px;
       font-size: 16px;
       border: none;
-      border-radius: 8px;
+      border-radius: 16px;
       cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s ease;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(
+        135deg,
+        var(--blue-main),
+        var(--blue-soft)
+      );
+      box-shadow:
+        0 10px 30px rgba(37, 99, 235, 0.35),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .lost-btn {
-      background: #4f46e5;
-      color: #fff;
-    }
-    .lost-btn:hover {
-      background: #3730a3;
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 16px 40px rgba(37, 99, 235, 0.45),
+        inset 0 1px 0 rgba(255,255,255,0.35);
     }
 
+    /* subtle variation only via gradient */
     .add-btn {
-      background: #f59e0b;
-      color: #fff;
-    }
-    .add-btn:hover {
-      background: #d97706;
+      background: linear-gradient(
+        135deg,
+        var(--blue-soft),
+        var(--blue-light)
+      );
     }
 
     .found-btn {
-      background: #059669;
-      color: #fff;
+      background: linear-gradient(
+        135deg,
+        var(--blue-main),
+        var(--blue-light)
+      );
     }
-    .found-btn:hover {
-      background: #047857;
+
+    /* INTERNAL ACTION BUTTON */
+    .signup-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      box-shadow: 0 6px 18px rgba(30, 64, 175, 0.45);
+    }
+
+    .signup-btn:hover {
+      transform: translateY(-2px);
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <h1>🔗 CampusFetch Item Links</h1>
-  <p>Quickly navigate between Lost and Found items</p>
-</header>
+  <!-- 🌟 GLOW BACKGROUND -->
+  <div class="bg-anim">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
 
-<div class="btn-container">
-  <button class="lost-btn" id="goLost">View Lost Items</button>
+  <header>
+    <h1>🔗 CampusFetch Item Links</h1>
+    <p>Quickly navigate between Lost and Found items</p>
+  </header>
 
-  <!-- ✅ NEW CENTER BUTTON -->
-  <button class="add-btn" id="goAdd">➕ Add Item</button>
+  <div class="btn-container">
+    <button class="lost-btn" id="goLost">View Lost Items</button>
+    <button class="add-btn" id="goAdd">➕ Add Item</button>
+    <button class="found-btn" id="goFound">View Found Items</button>
+  </div>
 
-  <button class="found-btn" id="goFound">View Found Items</button>
-</div>
+  <a href="../signup/signup.html">
+    <button class="signup-btn">Sign Up</button>
+  </a>
 
-<script>
-  document.getElementById("goLost").addEventListener("click", () => {
-    window.location.href = "../listItems/listItems.html";
-  });
+  <script>
+    document.getElementById("goLost").addEventListener("click", () => {
+      window.location.href = "../listItems/listItems.html";
+    });
 
-  document.getElementById("goAdd").addEventListener("click", () => {
-    window.location.href = "../addItem/addItem.html";
-  });
+    document.getElementById("goAdd").addEventListener("click", () => {
+      window.location.href = "../addItem/addItem.html";
+    });
 
-  document.getElementById("goFound").addEventListener("click", () => {
-    window.location.href = "../itemsfound/itemsfound.html";
-  });
-</script>
+    document.getElementById("goFound").addEventListener("click", () => {
+      window.location.href = "../itemsfound/itemsfound.html";
+    });
+  </script>
 
 </body>
 </html>

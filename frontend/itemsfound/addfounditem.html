@@ -4,71 +4,94 @@
   <meta charset="UTF-8">
   <title>Add Found Item | CampusFetch</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f1f5f9;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      padding: 25px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-    header p {
-      margin: 5px 0 0;
-      font-size: 16px;
-    }
-    form {
-      max-width: 500px;
-      margin: 30px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #374151;
-    }
-    input, select, textarea, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      font-size: 14px;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-    button {
-      background: #059669;
-      color: white;
-      font-weight: bold;
-      border: none;
-      margin-top: 20px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background: #047857;
-    }
-    .secondary-btn {
-      background: #4f46e5;
-    }
-    .secondary-btn:hover {
-      background: #3730a3;
-    }
-  </style>
+  :root {
+    --brand: #003366;
+    --success: #059669;
+    --success-hover: #047857;
+    --accent: #4f46e5;
+    --accent-hover: #3730a3;
+    --surface: #f1f5f9;
+    --text-primary: #374151;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: var(--surface);
+    padding: 0;
+  }
+
+  header {
+    background: linear-gradient(135deg, #10b981, var(--success));
+    color: white;
+    padding: 25px;
+    text-align: center;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  header p {
+    margin: 5px 0 0;
+    font-size: 16px;
+  }
+
+  form {
+    max-width: 500px;
+    margin: 30px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: var(--text-primary);
+  }
+
+  input, select, textarea, button {
+    width: 96%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-size: 14px;
+    font-family: inherit;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  button {
+    background: var(--success);
+    color: white;
+    font-weight: bold;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: var(--success-hover);
+  }
+
+  .secondary-btn {
+    background: var(--accent);
+  }
+
+  .secondary-btn:hover {
+    background: var(--accent-hover);
+  }
+</style>
+
 </head>
 <body>
 

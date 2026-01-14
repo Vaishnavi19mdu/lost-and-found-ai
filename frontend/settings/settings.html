@@ -36,12 +36,33 @@
 
   <section class="card">
     <h3>👥 Users Connected</h3>
-    <p>Approx active users: <strong>340+</strong></p>
+    <p>Approx active users: <strong>20</strong></p>
   </section>
 
   <section class="card">
     <h3>🏫 College Information</h3>
     <p>College Name: <strong>ABC Institute of Technology</strong></p>
+  </section>
+
+  <!-- ✅ NEW SIMPLE BUTTON CARD -->
+  <section class="card">
+    <h3>🔗 Go to home page</h3>
+    <p>Access linking & maintenance tools.</p>
+
+    <a href="../miscOps/linkItems.html">
+      <button style="
+        width:100%;
+        padding:12px;
+        background:#2563eb;
+        color:white;
+        border:none;
+        border-radius:8px;
+        font-weight:bold;
+        cursor:pointer;
+      ">
+        Go to Link Items
+      </button>
+    </a>
   </section>
 
   <section class="card danger">
@@ -51,6 +72,7 @@
   </section>
 
 </main>
+
 <script type="module">
   import { auth } from "../firebase.js";
   import { onAuthStateChanged } 
@@ -58,12 +80,10 @@
 
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // Not logged in → kick out
       window.location.href = "../login/login.html";
     }
   });
 </script>
-
 
 </body>
 </html>

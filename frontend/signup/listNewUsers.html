@@ -4,36 +4,71 @@
   <meta charset="UTF-8">
   <title>Registered New Users | CampusFetch</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      color: #2c3e50;
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 12px;
-      border: 1px solid #ddd;
-      text-align: left;
-    }
-    th {
-      background: #4a90e2;
-      color: #fff;
-    }
-    tr:nth-child(even) {
-      background: #f2f2f2;
-    }
-  </style>
+  :root {
+    --brand: #003366;
+    --muted: #6b7280;
+    --surface: #eef2f9;
+    --accent: #2563eb;
+    --accent-hover: #1e40af;
+    --border: #e5e7eb;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--surface);
+    padding: 40px 20px;
+  }
+
+  h1 {
+    color: var(--brand);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  }
+
+  thead {
+    background: var(--accent);
+  }
+
+  th {
+    padding: 14px;
+    color: #ffffff;
+    font-weight: 600;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: #374151;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  tbody tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  tbody tr:hover {
+    background: #eef2ff;
+  }
+</style>
+
 </head>
 <body>
 

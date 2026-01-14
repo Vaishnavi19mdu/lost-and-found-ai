@@ -4,97 +4,111 @@
   <meta charset="UTF-8">
   <title>Signup | CampusFetch</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f4ff, #dce3f7);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
+  :root {
+    --brand: #003366;
+    --muted: #6b7280;
+    --surface: #eef2f9;
+    --accent: #2563eb;
+    --accent-hover: #1e40af;
+    --success: #27ae60;
+  }
 
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--surface);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 
-    header h1 {
-      color: #2c3e50;
-      margin: 0;
-    }
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-    header p {
-      color: #555;
-      font-size: 14px;
-    }
+  header h1 {
+    color: var(--brand);
+    margin: 0;
+  }
 
-    main {
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 320px;
-      position: relative;
-    }
+  header p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 6px;
+  }
 
-    form {
-      display: flex;
-      flex-direction: column;
-    }
+  main {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    width: 340px;
+  }
 
-    input {
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
 
-    input:focus {
-      border-color: #4a90e2;
-      outline: none;
-      box-shadow: 0 0 5px rgba(74,144,226,0.5);
-    }
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
 
-    button {
-      margin-top: 12px;
-      padding: 12px;
-      background: #4a90e2;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
+  input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
 
-    button:hover {
-      background: #357ABD;
-    }
+  button {
+    margin-top: 14px;
+    padding: 12px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
 
-    .secondary-btn {
-      background: #777;
-      margin-top: 10px;
-    }
+  button:hover {
+    background: var(--accent-hover);
+  }
 
-    .secondary-btn:hover {
-      background: #555;
-    }
+  .secondary-btn {
+    background: #6b7280;
+  }
 
-    .bottom-right-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #27ae60;
-    }
+  .secondary-btn:hover {
+    background: #4b5563;
+  }
 
-    .bottom-right-btn:hover {
-      background: #1e8449;
-    }
-  </style>
+  .bottom-right-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--success);
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+    font-size: 14px;
+  }
+
+  .bottom-right-btn:hover {
+    background: #1e8449;
+  }
+</style>
+
 </head>
 
 <body>
